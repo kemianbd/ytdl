@@ -35,7 +35,11 @@ def dl_convert(yturl,dlpath,vid):
             continue
 
         #Grab video from youtube
-        ytdl = YouTube(ytget[i])
+        try:
+            ytdl = YouTube(ytget[i])
+        except:
+            print('File ', i+1 ,' could not be downloaded, make sure the YouTube link is correct')
+            continue
 
         #Get attributes of video
         global yfilesize
