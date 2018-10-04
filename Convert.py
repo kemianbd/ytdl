@@ -24,6 +24,11 @@ def show_progress(stream = None, chunk = None, file_handle = None, bytes_remaini
     sys.stdout.flush()
 
 def dl_convert(yturl,dlpath,vid):
+    #Save dlpath for future
+    configtxt = open("config.txt", "w")
+    configtxt.write(dlpath)
+    configtxt.close()
+
     #Split entries
     ytget = yturl.splitlines()
 
@@ -81,9 +86,18 @@ if __name__ == "__main__":
     yt_url = scrolledtext.ScrolledText(mainframe, width=67, height=5)
     yt_url.grid(column=1, row=3, sticky=(W, E))
 
-    #Choose download path
+    #Download path
+    #Initialize
     ttk.Label(mainframe, text="Download Location").grid(column=1, row=5, sticky=W)
     path_var = StringVar()
+
+    #Default path
+    configtxt = open("config.txt", "r")
+    dlpdefault = configtxt.read()
+    configtxt.close()
+    path_var.set(dlpdefault)
+
+    #UI button
     dlpath = ttk.Entry(mainframe, width=67, textvariable=path_var)
     dlpath.grid(column=1, row=6, sticky=(W, E))
 
