@@ -23,7 +23,7 @@ def show_progress(stream = None, chunk = None, file_handle = None, bytes_remaini
     sys.stdout.write(text)
     sys.stdout.flush()
 
-def dl_convert(yturl,dlpath,vid):
+def dl_convert(yturl,dlpath,vid,bit):
     #Save dlpath for future
     configtxt = open("config.txt", "w")
     configtxt.write(dlpath)
@@ -63,7 +63,7 @@ def dl_convert(yturl,dlpath,vid):
         #Convert video to mp3
         print('\n')
         clip = mp.VideoFileClip(dlpath + '\\' + ytitle + '.mp4')
-        clip.audio.write_audiofile(dlpath + '\\' + ytitle + '.mp3')
+        clip.audio.write_audiofile(dlpath + '\\' + ytitle + '.mp3', bitrate=bit)
         clip.reader.close()
 
         #Delete video if not requested
@@ -110,13 +110,17 @@ if __name__ == "__main__":
     vidb = ttk.Checkbutton(mainframe, text='Keep Video?', variable=vid)
     vidb.grid(column=1, row=8)
 
+    bit = StringVar()
+    bit_rate = ttk.OptionMenu(mainframe,bit,'256k','192k','256k','320k')
+    bit_rate.grid(column=1, row=9)
+
     #Actions
     convert = ttk.Button(mainframe, text="Go!",
-        command=lambda: dl_convert(yt_url.get(1.0,END), dlpath.get(), vid.get()))
-    convert.grid(column=1, row=10, sticky=W)
+        command=lambda: dl_convert(yt_url.get(1.0,END), dlpath.get(), vid.get(), bit.get()))
+    convert.grid(column=1, row=10, sticky=E)
 
     leave = ttk.Button(mainframe, text="Exit", command=exit_program)
-    leave.grid(column=1, row=10, sticky=E)
+    leave.grid(column=1, row=10, sticky=W)
 
     for child in mainframe.winfo_children():
         child.grid_configure(padx=5, pady=5)
