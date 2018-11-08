@@ -33,6 +33,7 @@ def dl_convert(yturl,dlpath,vid,bit):
     ytget = yturl.splitlines()
 
     #Loop through all URLs
+    err_cnt = 0
     for i in range(0,len(ytget)):
 
         #Skip blank line
@@ -43,7 +44,8 @@ def dl_convert(yturl,dlpath,vid,bit):
         try:
             ytdl = YouTube(ytget[i])
         except:
-            print('File ', i+1 ,' could not be downloaded, make sure the YouTube link is correct')
+            err_cnt += 1
+            print('File',i+1,'could not be downloaded, make sure the YouTube link is correct')
             continue
 
         #Get attributes of video
@@ -70,7 +72,10 @@ def dl_convert(yturl,dlpath,vid,bit):
         if vid == 0:
             os.remove(dlpath + '\\' + ytitle + '.mp4')
 
-    messagebox.showinfo('Status','All downloads complete')
+    if err_cnt == 0:
+        messagebox.showinfo('Status','All downloads complete')
+    else:
+        messagebox.showinfo('Status', 'At least one file did not download successfully')
 
 if __name__ == "__main__":
     root = Tk()
